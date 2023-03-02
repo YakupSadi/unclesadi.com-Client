@@ -8,7 +8,7 @@ const {
 
 } = require('../controller/folder')
 
-Folder.route('/folder').get(getFolder)
+Folder.route('/folder').get(getAllFolder)
 Folder.route('/createFolder').post(createFolder)
 
 module.exports = Folder

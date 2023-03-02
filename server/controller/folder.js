@@ -7,12 +7,12 @@ const getAllFolder = async( async(req, res) => {
     res.status(200).json({ data })
 })
 
-const getFolder = async( async(req, res) => {
+const getFolder = async( async(req, res, next) => {
     const { id: dataID } = req.params
     const data = await Folder.findOne({ _id: dataID })
 
     if(!data) {
-        return next(CustomError('Folder not Found'))
+        return next(new CustomError('Folder not Found'))
     }
 
     res.status(200).json({ data })

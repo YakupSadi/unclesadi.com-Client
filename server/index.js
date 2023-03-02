@@ -27,6 +27,9 @@ app.use(errorHandler)
 const Admin = require('./routers/admin')
 app.use('/api/v1/', Admin)
 
+const Folder = require('./routers/folder')
+app.use('/api/v1/', Folder)
+
 
 // Listen
 const start = async () => {

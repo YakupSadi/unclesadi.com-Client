@@ -1,9 +1,6 @@
 const express = require('express')
 const Folder = express.Router()
 
-// Auth
-const auth = require('../middleware/auth')
-
 const { 
     getFolder,
     getAllFolder,
@@ -11,7 +8,7 @@ const {
 
 } = require('../controller/folder')
 
-Folder.route('/folder').get(auth, getFolder)
-Folder.route('/createFolder').post(auth, createFolder)
+Folder.route('/folder').get(getFolder)
+Folder.route('/createFolder').post(createFolder)
 
 module.exports = Folder

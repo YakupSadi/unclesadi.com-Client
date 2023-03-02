@@ -70,7 +70,7 @@ const logOut = async (req, res, next) => {
     })
 }
 
-const isValid = async (req, res, nexy) => {
+const isValid = async (req, res, next) => {
     res.json({
         message: 'Token is Valid'
     })

@@ -14,11 +14,6 @@ const FolderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
         required: true
-    },
-    createdBy: {
-        type: mongoose.Types.ObjectId,
-        ref: 'admin',
-        required: true,
     }
 }, { timestamps: true })
 

@@ -19,8 +19,6 @@ const getFolder = async( async(req, res) => {
 })
 
 const createFolder = async( async(req, res) => {
-    req.body.createdBy = req.admin.adminID
-
     const data = await Folder.create(req.body)
 
     res.status(201).json({ data })

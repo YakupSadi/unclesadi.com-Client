@@ -5,12 +5,16 @@ const {
     getFolder,
     getAllFolder,
     createFolder,
-    deleteFolder
+    deleteFolder,
+    updateFolder
 
 } = require('../controller/folder')
 
 Folder.route('/folder').get(getAllFolder)
 Folder.route('/createFolder').post(createFolder)
-Folder.route('/folder/:id').delete(deleteFolder)
+
+Folder.route('/folder/:id')
+    .patch(updateFolder)
+    .delete(deleteFolder)
 
 module.exports = Folder

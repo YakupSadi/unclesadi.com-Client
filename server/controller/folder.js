@@ -23,7 +23,15 @@ const createFolder = async( async(req, res) => {
     res.status(201).json({ msg: 'Folder Created' })
 })
 
+const updateFolder = async( async(req, res, next) => {
+    const { id: dataID } = req.params
+    const data = await Folder.findOneAndUpdate({ _id: dataID }, req.body, {
+        new: true,
+        runValidators: true
+    })
 
+    res.status(200).json({ msg: 'Folder Updated' })
+})
 
 const deleteFolder = async( async(req, res, next) => {
     const { id: dataID } = req.params
@@ -40,5 +48,6 @@ module.exports = {
     getFolder,
     getAllFolder,
     createFolder,
-    deleteFolder
+    deleteFolder,
+    updateFolder
 }

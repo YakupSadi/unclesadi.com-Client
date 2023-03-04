@@ -14,7 +14,7 @@ Folder.route('/folder').get(getAllFolder)
 Folder.route('/createFolder').post(createFolder)
 
 Folder.route('/folder/:id')
-    .patch(updateFolder)
+    .put(updateFolder)
     .delete(deleteFolder)
 
 module.exports = Folder

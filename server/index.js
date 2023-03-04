@@ -22,6 +22,9 @@ app.use(cookieParser())
 const errorHandler = require('./middleware/error')
 app.use(errorHandler)
 
+// Uploads
+app.use(express.static('public/uploads'));
+
 
 // Routers
 const Admin = require('./routers/admin')
@@ -29,6 +32,9 @@ app.use('/api/v1/', Admin)
 
 const Folder = require('./routers/folder')
 app.use('/api/v1/', Folder)
+
+const File = require('./routers/file')
+app.use('/api/v1/', File)
 
 
 // Listen

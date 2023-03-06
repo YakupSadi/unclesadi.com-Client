@@ -21,6 +21,12 @@ const getFolder = async( async(req, res, next) => {
 const createFolder = async( async(req, res) => {
     const data = await Folder.create(req.body)
     res.status(201).json({ msg: 'Folder Created' })
+
+    if(!data) {
+        return next(new CustomError('Folder Not Found'))
+    }
+
+    res.status(200).json({ msg: 'Created Folder' })
 })
 
 const updateFolder = async( async(req, res, next) => {
@@ -29,6 +35,10 @@ const updateFolder = async( async(req, res, next) => {
         new: true,
         runValidators: true
     })
+
+    if(!data) {
+        return next(new CustomError('Folder Not Found'))
+    }
 
     res.status(200).json({ msg: 'Folder Updated' })
 })

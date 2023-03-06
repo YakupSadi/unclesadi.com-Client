@@ -14,7 +14,7 @@ const multerLimits = multer({
     },
     storage: multer.diskStorage({
         filename: (req, file, cb) => {
-            cb(null, file.originalname)
+            cb(null, `${Date.now()}-${file.originalname}`)
         },
         destination: (req, file, cb) => {
             cb(null, 'uploads/')
@@ -25,12 +25,18 @@ const multerLimits = multer({
 const { 
     getFile,
     getAllFile,
-    createFile
+    createFile,
+    deleteFile,
+    updateFile
 } = require('../controller/file')
 
 File.route('/file').get(getAllFile)
 File.route('/file/uploads/:image').get(getFile)
-File.route('/file/createFile').post(multerLimits.single('image'), createFile)
+File.route('/file/createFile').post(createFile, multerLimits.single('image'))
+
+File.route('/file/:id')
+    .post(updateFile, multerLimits.single('image'))
+    .delete(deleteFile)
 
 module.exports = File
 

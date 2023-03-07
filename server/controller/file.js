@@ -29,14 +29,32 @@ const createFile = async( async(req, res, next) => {
 })
 
 const updateFile = async( async(req, res, next) => {
-    const { title } = req.body
     const image = req.file.path
+    const { title, old } = req.body
+    const { id: dataID } = req.params
 
     if(!image || !title) {
         return next(new CustomError('File or Title Not Found'))
     }
-    console.log(title)
-    res.status(201).json({ msg: 'File Created'})
+
+    const data = await File.findOneAndUpdate({ _id: dataID }, {
+        new: true,
+        title: title,
+        image: image,
+        runValidators: true
+    })
+
+    if(!data) {
+        return next(CustomError('File Not Found'))
+    }
+
+    fs.unlink(path.join(__dirname, '../', old), (err) => {
+        if (err) {
+            console.log(err)
+        }
+    })
+
+    res.status(200).json({ msg: 'File Updated' })
 })
 
 const deleteFile = async( async(req, res, next) => {
@@ -52,7 +70,7 @@ const deleteFile = async( async(req, res, next) => {
         if (err) {
             return next(new CustomError('Something Went Wrong'))
         }
-    });
+    })
 
     res.status(200).json({ msg: 'File Deleted' })
 })

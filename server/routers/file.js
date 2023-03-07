@@ -32,10 +32,10 @@ const {
 
 File.route('/file').get(getAllFile)
 File.route('/file/uploads/:image').get(getFile)
-File.route('/file/createFile').post(createFile, multerLimits.single('image'))
+File.route('/file/createFile').post(multerLimits.single('image'), createFile)
 
 File.route('/file/:id')
-    .post(updateFile, multerLimits.single('image'))
+    .put(multerLimits.single('image'), updateFile)
     .delete(deleteFile)
 
 module.exports = File

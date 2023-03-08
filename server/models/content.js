@@ -7,7 +7,7 @@ const ContentSchema = new mongoose.Schema({
         trim: true
     },
     data: {
-        type: Object,
+        type: Array,
         required: true
     },
     createdAt: {

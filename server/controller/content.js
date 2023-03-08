@@ -14,7 +14,7 @@ const createContent = async( async(req, res, next) => {
 
     const content = await Content.create({
         title: 'Hi',
-        data: outputData
+        data: outputData.blocks
     });
 
     if(!content) {

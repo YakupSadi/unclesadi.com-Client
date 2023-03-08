@@ -36,6 +36,9 @@ app.use('/api/v1/', Folder)
 const File = require('./routers/file')
 app.use('/api/v1/', File)
 
+const Content = require('./routers/content')
+app.use('/api/v1/', Content)
+
 
 // Listen
 const start = async () => {

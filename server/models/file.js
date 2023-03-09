@@ -6,6 +6,10 @@ const FileSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    folder: {
+        type: String,
+        required: true,
+    },
     image: {
         type: String,
         required: true,

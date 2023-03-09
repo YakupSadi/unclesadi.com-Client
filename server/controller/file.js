@@ -15,32 +15,33 @@ const getFile = async( async(req, res) => {
 })
 
 const createFile = async( async(req, res, next) => {
-    const { title } = req.body
+    const { title, folder } = req.body
     const image = req.file.path
 
-    if(!image || !title) {
-        return next(new CustomError('File or Title Not Found'))
+    if(!image || !title || !folder) {
+        return next(new CustomError('File or Title or Folder Not Found'))
     }
 
-    const file = new File({ title, image })
+    const file = new File({ title, folder, image })
     await file.save()
 
     res.status(201).json({ msg: 'File Created'})
 })
 
 const updateFile = async( async(req, res, next) => {
-    const image = req.file.path
-    const { title, old } = req.body
-    const { id: dataID } = req.params
+    const { title, folder, old } = req.body
+    const image                  =  req.file.path
+    const { id: dataID }         = req.params
 
-    if(!image || !title) {
-        return next(new CustomError('File or Title Not Found'))
+    if(!image || !title || !folder) {
+        return next(new CustomError('File or Title or Folder Not Found'))
     }
 
     const data = await File.findOneAndUpdate({ _id: dataID }, {
-        new: true,
-        title: title,
-        image: image,
+        new    : true,
+        title  : title,
+        folder : folder,
+        image  : image,
         runValidators: true
     })
 

@@ -9,6 +9,17 @@ const getAllContent = async( async(req, res) => {
     res.status(200).json({ data })
 })
 
+const getContent = async( async(req, res, next) => {
+    const { id: dataID } = req.params
+    const data = await Content.findOne({ _id: dataID })
+
+    if(!data) {
+        return next(new CustomError('Folder not Found'))
+    }
+
+    res.status(200).json({ data })
+})
+
 const createContent = async( async(req, res, next) => {
     const { title, outputData } = req.body
 
@@ -26,6 +37,7 @@ const createContent = async( async(req, res, next) => {
 
 
 module.exports = {
+    getContent,
     createContent,
     getAllContent
 }

@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path')
 const Content = require('../models/content')
 const async = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
@@ -37,9 +35,42 @@ const createContent = async( async(req, res, next) => {
     res.status(201).json({ msg: 'Content Created' })
 })
 
+const updateContent = async( async(req, res, next) => {
+    const { id: dataID } = req.params
+    const content = {
+        title : req.body.title,
+        file  : req.body.file,
+        data  : req.body.outputData.blocks
+    }
+
+    const data = await Content.findOneAndUpdate({ _id: dataID }, content, {
+        new: true,
+        runValidators: true
+    })
+
+    if(!data) {
+        return next(new CustomError('Content Not Found'))
+    }
+
+    res.status(200).json({ msg: 'Content Updated' })
+})
+
+const deleteContent = async( async(req, res, next) => {
+    const { id: dataID } = req.params
+    const data = await Content.findOneAndDelete({ _id: dataID })
+
+    if(!data) {
+        return next(CustomError('Content Not Found'))
+    }
+
+    res.status(200).json({ msg: 'Content Deleted' })
+})
+
 
 module.exports = {
     getContent,
     createContent,
-    getAllContent
+    getAllContent,
+    updateContent,
+    deleteContent
 }

@@ -8,17 +8,6 @@ const getAllFolder = async( async(req, res) => {
     res.status(200).json({ data })
 })
 
-const getFolder = async( async(req, res, next) => {
-    const { id: dataID } = req.params
-    const data = await Folder.findOne({ _id: dataID })
-
-    if(!data) {
-        return next(new CustomError('Folder not Found'))
-    }
-
-    res.status(200).json({ data })
-})
-
 const createFolder = async( async(req, res) => {
     const data = await Folder.create(req.body)
 
@@ -56,7 +45,6 @@ const deleteFolder = async( async(req, res, next) => {
 
 
 module.exports = {
-    getFolder,
     getAllFolder,
     createFolder,
     deleteFolder,

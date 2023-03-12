@@ -3,7 +3,6 @@ const Folder = express.Router()
 const auth = require('../middleware/auth')
 
 const { 
-    getFolder,
     getAllFolder,
     createFolder,
     deleteFolder,
@@ -16,6 +15,6 @@ Folder.route('/folder/createFolder').post(auth, createFolder)
 
 Folder.route('/folder/:id')
     .put(auth, updateFolder)
-    .delete(deleteFolder)
+    .delete(auth, deleteFolder)
 
 module.exports = Folder

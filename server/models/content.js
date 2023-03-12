@@ -6,6 +6,10 @@ const ContentSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    file: {
+        type: String,
+        required: true
+    },
     data: {
         type: Array,
         required: true

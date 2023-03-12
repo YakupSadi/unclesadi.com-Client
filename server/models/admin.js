@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
+
 const AdminSchema = new mongoose.Schema({
     email: {
         type: String,

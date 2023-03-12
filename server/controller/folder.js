@@ -2,6 +2,7 @@ const Folder = require('../models/folder')
 const async = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
 
+
 const getAllFolder = async( async(req, res) => {
     const data = await Folder.find({})
     res.status(200).json({ data })
@@ -52,6 +53,7 @@ const deleteFolder = async( async(req, res, next) => {
 
     res.status(200).json({ msg: 'Folder Deleted' })
 })
+
 
 module.exports = {
     getFolder,

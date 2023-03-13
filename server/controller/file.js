@@ -31,8 +31,11 @@ const createFile = async( async(req, res, next) => {
 
 const updateFile = async( async(req, res, next) => {
     const { title, folder, old } = req.body
-    const image                  = a = req.file ? req.file.path : old.slice(8)
+    const image                  = a = req.file ? req.file.path : old
     const { id: dataID }         = req.params
+
+    console.log(image)
+    console.log(old)
 
     if(!title || !folder) {
         return next(new CustomError('File or Title or Folder Not Found'))
@@ -50,12 +53,13 @@ const updateFile = async( async(req, res, next) => {
         return next(CustomError('File Not Found'))
     }
 
-        
-    fs.unlink(path.join(__dirname, '../', old), (err) => {
-        if (err) {
-            console.log(err)
-        }
-    })
+    if(old !== image) {
+        fs.unlink(path.join(__dirname, '../', old), (err) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+    }
 
     res.status(200).json({ msg: 'File Updated' })
 })

@@ -1,13 +1,23 @@
-<script setup>
-
+<script>
+export default {
+    props: [
+        'image',
+        'title'
+    ],
+    data() {
+        return {
+            urlImage: `http://localhost:4000/api/v1/file/${this.image}`
+        }
+    }
+}
 </script>
 
 <template>
     <div class="file">
-        <NuxtLink to="/Vue.js">
-            <img src="~/assets/images/js.png" alt="JavaScript">
+        <NuxtLink :to="title">
+            <img :src="urlImage" :alt="this.title">
         </NuxtLink>
-    </div>    
+    </div>
 </template>
 
 <style scoped>
@@ -23,6 +33,7 @@
         height: 6rem;
     }
     .file > a > img {
+        width: 100%;
         height: 100%;
         border-radius: 3px;
         border: 3px solid #fff;

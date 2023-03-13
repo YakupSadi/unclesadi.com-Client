@@ -1,4 +1,5 @@
 <script>
+import axios  from 'axios'
 import Folder from '~/components/index/folder.vue';
 
 definePageMeta({
@@ -8,6 +9,25 @@ definePageMeta({
 export default {
     components: {
         Folder
+    },
+    data() {
+        return {
+            folders: null
+        }
+    },
+    mounted() {
+        this.getAllFolder()
+    },
+    methods: {
+        getAllFolder() {
+            axios.get('http://localhost:4000/api/v1/folder')
+            .then((res) => {
+                this.folders = res.data.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        },
     }
 }
 </script>
@@ -15,8 +35,11 @@ export default {
 <template>
     <main class="index">
         <Folder 
-            v-for="n in 14" 
-            :key="n"
+            v-for="(folder, index) in this.folders"
+            :key        = "index"
+            :id         = "folder._id"
+            :title      = "folder.title"
+            :background = "folder.background"
         />
     </main>    
 </template>

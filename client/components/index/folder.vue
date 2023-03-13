@@ -1,9 +1,33 @@
 <script>
-import File from './file.vue';
+import axios from 'axios';
+import File  from './file.vue';
 
 export default {
     components: {
         File
+    },
+    props: [
+        'title',
+        'background'
+    ],
+    data() {
+        return {
+            files: null
+        }
+    },
+    mounted() {
+        this.getAllFile()
+    },
+    methods: {
+        getAllFile() {
+            axios.get('http://localhost:4000/api/v1/file')
+            .then((res) => {
+                this.files = res.data.data.filter(data => data.folder === this.title);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
     }
 }
 </script>
@@ -11,13 +35,17 @@ export default {
 <template>
     <div class="folder">
         <div class="folder_title">
-            Back-End
+            {{ this.title }}
         </div>
 
-        <div class="folder_container">
+        <div class="folder_container" :style="{ backgroundColor: background }">
             <File 
-                v-for="n in 3" 
-                :key="n"
+                v-for="(file, index) in files"
+                :key    = "index"
+                :id     = "file._id"
+                :title  = "file.title"
+                :folder = "file.folder"
+                :image  = "file.image"
             />
         </div>
     </div>    
@@ -48,7 +76,6 @@ export default {
         border-radius: 0 3px 3px 3px;
         background-color: rebeccapurple;
         grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
-        /* box-shadow: inset -5px -5px 1rem red, inset 5px 5px 1rem red; */
     }
 
     @media (min-width: 62em) { 

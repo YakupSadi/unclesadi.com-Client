@@ -4,6 +4,7 @@ const ContentSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
+        uniqe: true,
         trim: true
     },
     file: {

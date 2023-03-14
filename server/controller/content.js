@@ -19,6 +19,17 @@ const getContent = async( async(req, res, next) => {
     res.status(200).json({ data })
 })
 
+const getSlug = async( async(req, res, next) => {
+    const { id: dataTitle } = req.params
+    const data = await Content.find({ file: dataTitle })
+    
+    if(!data) {
+        return next(new CustomError('Folder not Found'))
+    }
+
+    res.status(200).json({ data })
+})
+
 const createContent = async( async(req, res, next) => {
     const { title, file, outputData } = req.body
 
@@ -68,6 +79,7 @@ const deleteContent = async( async(req, res, next) => {
 
 
 module.exports = {
+    getSlug,
     getContent,
     createContent,
     getAllContent,

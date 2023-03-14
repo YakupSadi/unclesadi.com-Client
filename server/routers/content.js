@@ -3,6 +3,7 @@ const express = require('express')
 const Content = express.Router()
 
 const {
+    getSlug,
     getContent,
     getAllContent,
     createContent,
@@ -12,6 +13,7 @@ const {
 
 Content.route('/content').get(getAllContent)
 Content.route('/content/createContent').post(auth, createContent)
+Content.route('/content/slug/:id').get(getSlug)
 
 Content.route('/content/:id')
     .get(getContent)

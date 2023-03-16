@@ -15,6 +15,17 @@ const getFile = async( async(req, res) => {
     res.sendFile(path.join(__dirname, '../uploads', image))
 })
 
+const getSlug = async( async(req, res, next) => {
+    const { id: dataTitle } = req.params
+    const data = await File.findOne({ title: dataTitle })
+
+    if(!data) {
+        return next(new CustomError('File not Found'))
+    }
+
+    res.status(200).json({ data })
+})
+
 const createFile = async( async(req, res, next) => {
     const { title, folder } = req.body
     const image = req.file.path
@@ -85,6 +96,7 @@ const deleteFile = async( async(req, res, next) => {
 
 module.exports = {
     getFile,
+    getSlug,
     getAllFile,
     createFile,
     deleteFile,

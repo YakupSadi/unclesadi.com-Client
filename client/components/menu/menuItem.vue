@@ -1,11 +1,25 @@
-<script setup>
+<script>
+export default {
+    props: [
+        'title'
+    ],
+    
+    data() {
+        return {
+            slug: null
+        }
+    },
 
+    mounted() {
+        this.slug = this.$route.fullPath.slice(1)
+    }
+}
 </script>
 
 <template>
     <div class="menu_item">
-        <NuxtLink to="/Vue.js">
-            Vue.js
+        <NuxtLink :to="slug + '/' + title">
+            {{ title }}
         </NuxtLink>
     </div>
 </template>

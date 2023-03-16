@@ -1,9 +1,14 @@
 <script>
-import menuItem from './menuItem.vue';
+import menuItem from './menuItem.vue'
+import { mapState } from 'vuex'
 
 export default {
     components: {
         menuItem
+    },
+
+    computed: {
+        ...mapState(['content'])
     }
 }
 </script>
@@ -11,8 +16,9 @@ export default {
 <template>
     <div class="menu">
         <menuItem 
-            v-for="n in 14"
-            :key="n"
+            v-for="(item, index) in content"
+            :key   ="index"
+            :title ="item.title"
         />
     </div>
 </template>

@@ -1,12 +1,37 @@
 <script>
+import axios from 'axios'
+
 export default {
-    layout: 'default'
+    data() {
+        return {
+            slug: ''
+        }
+    },
+
+    mounted() {
+        this.slug = this.$route.fullPath.slice(1)
+        this.getContent()
+    },
+
+    methods: {
+        getContent() {
+            const segments = this.slug.split("/")
+
+            axios.get(`http://localhost:4000/api/v1/detail/slug/${segments[1]}`)
+            .then((res) => {
+                console.log(res.data.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    }
 }
 </script>
 
 <template>
     <main class="index">
-        Slug
+        {{ slug }}
     </main>    
 </template>
 

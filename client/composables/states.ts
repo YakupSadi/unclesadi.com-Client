@@ -1,1 +1,0 @@
-export const useConetnt = () => useState<string>('content', () => 'states')

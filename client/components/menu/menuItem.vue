@@ -6,12 +6,13 @@ export default {
     
     data() {
         return {
-            slug: null
+            slug : null
         }
     },
 
     mounted() {
         this.slug = this.$route.fullPath.slice(1)
+        this.slug = '/' + this.slug
     }
 }
 </script>

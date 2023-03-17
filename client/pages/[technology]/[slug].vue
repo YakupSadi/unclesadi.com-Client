@@ -4,7 +4,8 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            slug: ''
+            slug : '',
+            segm : null
         }
     },
 
@@ -16,6 +17,7 @@ export default {
     methods: {
         getContent() {
             const segments = this.slug.split("/")
+            this.segm = segments[1]
 
             axios.get(`http://localhost:4000/api/v1/detail/slug/${segments[1]}`)
             .then((res) => {
@@ -31,6 +33,18 @@ export default {
 </script>
 
 <template>
+    <Head>
+        <Title>{{ this.segm }}</Title>
+        
+        <Meta name="og:title" :content="this.segm" />
+        <Meta name="description" :content="this.segm" />
+        <Meta name="og:description" :content="this.segm" />
+
+        <Meta name="og:type" content="websitet" />
+        <Meta name="og:locale" content="en_US" />
+        <Meta name="og:url" content="https://unclesadi.com" />
+    </Head>
+
     <main class="index">
         {{ slug }}
     </main>    

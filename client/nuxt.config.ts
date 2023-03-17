@@ -4,6 +4,7 @@ export default defineNuxtConfig({
         '~/assets/css/reset.css',
         '@fortawesome/fontawesome-svg-core/styles.css',
     ],
+
     build: {
         transpile: [
             '@fortawesome/vue-fontawesome',
@@ -13,5 +14,6 @@ export default defineNuxtConfig({
             '@fortawesome/free-brands-svg-icons'
         ]
     },
+
     ssr: false
 })

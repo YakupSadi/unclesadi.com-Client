@@ -42,6 +42,18 @@ export default {
 </script>
 
 <template>
+    <Head>
+        <Title>{{ this.slug }}</Title>
+        
+        <Meta name="og:title" :content="this.slug" />
+        <Meta name="description" :content="this.slug" />
+        <Meta name="og:description" :content="this.slug" />
+
+        <Meta name="og:type" content="websitet" />
+        <Meta name="og:locale" content="en_US" />
+        <Meta name="og:url" content="https://unclesadi.com" />
+    </Head>
+
     <main class="index">
         <NuxtLink :to="slug">
             {{ slug }}

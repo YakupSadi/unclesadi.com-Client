@@ -22,23 +22,24 @@ const multerLimits = multer({
     })
 })
 
+
 /**/
 const { 
     getFile,
-    getSlug,
     getAllFile,
     createFile,
     deleteFile,
     updateFile
 } = require('../controller/file')
 
+
 File.route('/file').get(getAllFile)
-File.route('/detail/slug/:id').get(getSlug)
 File.route('/file/uploads/:image').get(getFile)
 File.route('/file/createFile').post(multerLimits.single('image'), createFile)
 
 File.route('/file/:id')
     .put(multerLimits.single('image'), updateFile)
     .delete(deleteFile)
+
 
 module.exports = File

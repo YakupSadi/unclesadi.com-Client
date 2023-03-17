@@ -6,20 +6,19 @@ export default {
     
     data() {
         return {
-            slug : null
+            slug: null
         }
     },
 
     mounted() {
-        this.slug = this.$route.fullPath.slice(1)
-        this.slug = '/' + this.slug
+        this.slug = this.$route.params.technology
     }
 }
 </script>
 
 <template>
     <div class="menu_item">
-        <NuxtLink :to="slug + '/' + title">
+        <NuxtLink :to="'/' + slug + '/' + title">
             {{ title }}
         </NuxtLink>
     </div>

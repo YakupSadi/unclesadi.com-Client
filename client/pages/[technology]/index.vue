@@ -22,8 +22,12 @@ export default {
         getContent() {
             axios.get(`http://localhost:4000/api/v1/content/slug/${this.slug}`)
             .then((res) => {
-                console.log(res.data.data[0])
-                this.setContent(res.data.data)
+                if(res.data.data[0]) {
+                    console.log(res.data.data[0])
+                    this.setContent(res.data.data)
+                } else {
+                    navigateTo('/')
+                } 
             })
             .catch((err) => {
                 console.log(err)

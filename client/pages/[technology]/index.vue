@@ -1,11 +1,17 @@
 <script>
 import axios from 'axios'
 import { mapState } from 'vuex'
+import Error from '../../components/error.vue'
 
 export default {
+    components: {
+        Error
+    },
+
     data() {
         return {
-            slug: ''
+            slug  : '',
+            error : false
         }
     },
 
@@ -26,11 +32,11 @@ export default {
                     console.log(res.data.data[0])
                     this.setContent(res.data.data)
                 } else {
-                    navigateTo('/')
+                    this.error = true
                 } 
             })
             .catch((err) => {
-                console.log(err)
+                this.error = true
             })
         },
 
@@ -54,11 +60,13 @@ export default {
         <Meta name="og:url" content="https://unclesadi.com" />
     </Head>
 
+    <Error v-if="this.error" />
+
     <main class="index">
         <NuxtLink :to="slug">
             {{ slug }}
         </NuxtLink>
-    </main>    
+    </main>
 </template>
 
 <style scoped>

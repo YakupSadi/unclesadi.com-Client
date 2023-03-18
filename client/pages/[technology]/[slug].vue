@@ -1,11 +1,12 @@
 <script>
 import axios from 'axios'
+import Error from '../../components/error.vue'
 
 export default {
     data() {
         return {
-            slug : '',
-            segm : null
+            slug  : '',
+            error : false
         }
     },
 
@@ -24,7 +25,7 @@ export default {
                 console.log(res.data.data)
             })
             .catch((err) => {
-                navigateTo('/')
+                this.error = true
             })
         }
     }
@@ -43,6 +44,8 @@ export default {
         <Meta name="og:locale" content="en_US" />
         <Meta name="og:url" content="https://unclesadi.com" />
     </Head>
+
+    <Error v-if="this.error" />
 
     <main class="index">
         {{ slug }}

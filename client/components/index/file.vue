@@ -30,6 +30,7 @@ export default {
         justify-content: center;
     }
     .file > a {
+        width: 6rem;
         height: 6rem;
     }
     .file > a > img {

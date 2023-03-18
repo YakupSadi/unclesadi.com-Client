@@ -11,6 +11,9 @@ export default {
     data() {
         return {
             slug  : '',
+            html  : '',
+
+            title : null,
             error : false
         }
     },
@@ -29,7 +32,11 @@ export default {
             axios.get(`http://localhost:4000/api/v1/content/slug/${this.slug}`)
             .then((res) => {
                 if(res.data.data[0]) {
-                    console.log(res.data.data[0])
+                    this.title = res.data.data[0].title
+                    const data = res.data.data[0].data
+
+                    console.log(data)
+                    this.outputHtml(data)
                     this.setContent(res.data.data)
                 } else {
                     this.error = true
@@ -42,6 +49,18 @@ export default {
 
         setContent(value) {
             this.$store.commit('getContent', value)
+        },
+
+        outputHtml(data) {
+            data.map(item => {
+                switch (item.type) {
+                    case 'paragraph':
+                        this.html += `<div>${item.data.text}</div>`
+                    default:
+                        return ''
+                }
+            })
+            document.querySelector('.data').innerHTML = this.html
         }
     }
 }
@@ -63,16 +82,28 @@ export default {
     <Error v-if="this.error" />
 
     <main class="index">
-        <NuxtLink :to="slug">
-            {{ slug }}
-        </NuxtLink>
+        <div class="article">
+            <h1>{{ this.title }}</h1>
+
+            <div class="data">
+    
+            </div>
+        </div>
     </main>
 </template>
 
 <style scoped>
     .index {
+        color: #fff;
         max-width: 100rem;
         padding: 6rem 2rem 2rem;
         min-height: var(--index-height);
+    }
+    .index > .article {
+        max-width: 60rem;
+        margin: 0 auto;
+    }
+    .index > .article > h1 {
+        margin-bottom: 1rem;
     }
 </style>

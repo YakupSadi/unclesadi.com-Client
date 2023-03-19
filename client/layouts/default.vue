@@ -75,6 +75,7 @@ export default {
 
 <style scoped>
     .header {
+        z-index: 2;
         width: 100%;
         height: 4rem;
         display: flex;

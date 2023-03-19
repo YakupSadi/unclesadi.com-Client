@@ -26,6 +26,7 @@ export default {
 <style scoped>
     .menu {
         bottom: 0;
+        z-index: 2;
         width: 100%;
         position: fixed;
         overflow-y: auto;

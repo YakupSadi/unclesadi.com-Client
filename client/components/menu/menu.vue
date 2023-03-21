@@ -1,5 +1,5 @@
 <script>
-import menuItem from './menuItem.vue'
+import menuItem     from './menuItem.vue'
 import { mapState } from 'vuex'
 
 export default {

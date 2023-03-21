@@ -2,34 +2,41 @@
 import Menu from '~/components/menu/menu.vue'
 
 export default {
+    components: {
+        Menu
+    },
+
     data() {
         return {
             menu: false,
             pageWidth: 0
         }
     },
+
     mounted() {
         this.pageWidth = window.innerWidth
         window.addEventListener('resize', this.handleResize)
     },
+    
     beforeDestroy() {
         window.removeEventListener('resize', this.handleResize);
     },
-    components: {
-        Menu
-    },
+    
     methods: {
         preventDefault(e) {
             e.preventDefault()
         },
+
         enableScroll() {
             const body = document.querySelector('body')
             body.style.overflowY = 'auto'
         },
+        
         disableScroll() {
             const body = document.querySelector('body')
             body.style.overflow = 'hidden'
         },
+        
         handleResize() {
             if (window.innerWidth < 600 && this.menu) {
                 this.disableScroll()
@@ -37,6 +44,7 @@ export default {
                 this.enableScroll()
             }
         },
+        
         showMenu() {
             this.menu = !this.menu
             this.handleResize()

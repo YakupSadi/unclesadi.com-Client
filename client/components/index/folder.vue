@@ -6,18 +6,22 @@ export default {
     components: {
         File
     },
+
     props: [
         'title',
         'background'
     ],
+    
     data() {
         return {
             files: null
         }
     },
+    
     mounted() {
         this.getAllFile()
     },
+    
     methods: {
         getAllFile() {
             axios.get('http://localhost:4000/api/v1/file')

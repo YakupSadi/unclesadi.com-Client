@@ -1,7 +1,7 @@
 <script>
-import axios    from 'axios'
-import EditorJS from '@editorjs/editorjs'
-import Error    from '../../components/error.vue'
+import axios       from 'axios'
+import EditorJS    from '@editorjs/editorjs'
+import Error       from '../../components/error.vue'
 
 import List        from '@editorjs/list'
 import Header      from '@editorjs/header'

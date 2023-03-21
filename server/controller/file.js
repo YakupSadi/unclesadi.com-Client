@@ -10,10 +10,12 @@ const getAllFile = async( async(req, res) => {
     res.status(200).json({ data })
 })
 
+
 const getFile = async( async(req, res) => {
     const image = req.params.image
     res.sendFile(path.join(__dirname, '../uploads', image))
 })
+
 
 const createFile = async( async(req, res, next) => {
     const { title, folder } = req.body
@@ -28,6 +30,7 @@ const createFile = async( async(req, res, next) => {
 
     res.status(201).json({ msg: 'File Created'})
 })
+
 
 const updateFile = async( async(req, res, next) => {
     const { title, folder, old } = req.body
@@ -63,6 +66,7 @@ const updateFile = async( async(req, res, next) => {
 
     res.status(200).json({ msg: 'File Updated' })
 })
+
 
 const deleteFile = async( async(req, res, next) => {
     const { image } = req.body

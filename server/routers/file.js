@@ -1,6 +1,8 @@
+const express         = require('express')
+const File            = express.Router()
+const auth            = require('../middleware/auth')
 const { CustomError } = require('../middleware/custom_error')
-const express = require('express')
-const File = express.Router()
+
 
 // Multer
 const multer  = require('multer')
@@ -23,7 +25,6 @@ const multerLimits = multer({
 })
 
 
-/**/
 const { 
     getFile,
     getAllFile,
@@ -35,11 +36,12 @@ const {
 
 File.route('/file').get(getAllFile)
 File.route('/file/uploads/:image').get(getFile)
-File.route('/file/createFile').post(multerLimits.single('image'), createFile)
+File.route('/file/createFile').post(auth, multerLimits.single('image'), createFile)
+
 
 File.route('/file/:id')
-    .put(multerLimits.single('image'), updateFile)
-    .delete(deleteFile)
+    .put(auth, multerLimits.single('image'), updateFile)
+    .delete(auth, deleteFile)
 
 
 module.exports = File

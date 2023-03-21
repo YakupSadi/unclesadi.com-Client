@@ -15,8 +15,8 @@ const register = async (req, res, next) => {
 
     const time = 1000 * 60 * 60 * 24 * 30
     res.cookie('token', token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + time)
+        httpOnly : true,
+        expires  : new Date(Date.now() + time)
     })
 
     res.status(201).json({
@@ -26,6 +26,7 @@ const register = async (req, res, next) => {
         token
     })
 }
+
 
 const login = async (req, res, next) => {
     const { email, password } = req.body
@@ -47,8 +48,8 @@ const login = async (req, res, next) => {
 
     const time = 1000 * 60 * 60 * 24 * 30
     res.cookie('token', token, {
-        httpOnly: true,
-        expires : new Date(Date.now() + time) 
+        httpOnly : true,
+        expires  : new Date(Date.now() + time) 
     })
 
     res.status(200).json({
@@ -59,16 +60,18 @@ const login = async (req, res, next) => {
     })
 }
 
+
 const logOut = async (req, res, next) => {
     res.cookie('token', 'logOut', {
-        httpOnly: true,
-        expires : new Date(Date.now())
+        httpOnly : true,
+        expires  : new Date(Date.now())
     })
 
     res.status(200).json({
         msg: 'Admin Logged Out'
     })
 }
+
 
 const isValid = async (req, res, next) => {
     res.json({

@@ -1,5 +1,5 @@
-const Folder = require('../models/folder')
-const async = require('../middleware/asycn')
+const Folder          = require('../models/folder')
+const async           = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
 
 
@@ -7,6 +7,7 @@ const getAllFolder = async( async(req, res) => {
     const data = await Folder.find({})
     res.status(200).json({ data })
 })
+
 
 const createFolder = async( async(req, res) => {
     const data = await Folder.create(req.body)
@@ -17,6 +18,7 @@ const createFolder = async( async(req, res) => {
 
     res.status(201).json({ msg: 'Folder Created' })
 })
+
 
 const updateFolder = async( async(req, res, next) => {
     const { id: dataID } = req.params
@@ -31,6 +33,7 @@ const updateFolder = async( async(req, res, next) => {
 
     res.status(200).json({ msg: 'Folder Updated' })
 })
+
 
 const deleteFolder = async( async(req, res, next) => {
     const { id: dataID } = req.params

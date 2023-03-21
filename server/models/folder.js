@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+
 const FolderSchema = new mongoose.Schema({
     title: {
         type     : String,
@@ -7,15 +8,19 @@ const FolderSchema = new mongoose.Schema({
         unique   : true,
         trim     : true
     },
+    
     background: {
         type     : String,
         required : true
     },
+    
     createdAt: {
         type     : Date,
         default  : Date.now(),
         required : true
     }
+
 }, { timestamps: true })
+
 
 module.exports = mongoose.model('Folder', FolderSchema)

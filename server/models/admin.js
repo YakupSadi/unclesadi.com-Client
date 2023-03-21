@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
+const bcrypt   = require('bcryptjs')
+const jwt      = require('jsonwebtoken')
 
 
 const AdminSchema = new mongoose.Schema({
@@ -12,11 +12,13 @@ const AdminSchema = new mongoose.Schema({
         ],
         unique   : true
     },
+
     password: {
         type      : String,
         required  : true,
         minlength : 5,
     },
+    
     role: {
         type    : String,
         enum    : ['admin', 'user'],
@@ -24,10 +26,12 @@ const AdminSchema = new mongoose.Schema({
     }
 })
 
+
 AdminSchema.pre('save', async function() {
     const salt    = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
 })
+
 
 AdminSchema.methods.createJWT = function() {
     return jwt.sign({ adminId: this._id, email: this.email }, process.env.JWT_SECRET, {
@@ -35,9 +39,11 @@ AdminSchema.methods.createJWT = function() {
     })
 }
 
+
 AdminSchema.methods.comparePassword = async function(canditatePassword) {
     const isMatch = await bcrypt.compare(canditatePassword, this.password)
     return isMatch
 }
+
 
 module.exports = mongoose.model('Admin', AdminSchema)

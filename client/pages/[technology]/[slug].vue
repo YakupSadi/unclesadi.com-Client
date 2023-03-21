@@ -9,6 +9,8 @@ import RawTool     from '@editorjs/raw'
 import CodeTool    from '@editorjs/code'
 import ColorPlugin from 'editorjs-text-color-plugin'
 
+import SimpleImage from '../../editorjs/image'
+
 export default {
     data() {
         return {
@@ -64,6 +66,8 @@ export default {
                             }       
                         },
 
+                        image: SimpleImage,
+
                         header : Header,
                         code   : CodeTool,
                         raw    : RawTool,
@@ -117,5 +121,19 @@ export default {
     }
     .index > .article > h1 {
         margin-bottom: 1rem;
+    }
+
+    /**/
+    .simple-image {
+        width: 100%;
+        display: flex;
+        margin: 1rem 0;
+        max-height: 30rem;
+        align-items: center;
+        justify-content: center;
+    }
+    .simple-image > img {
+        max-width: 100%;
+        max-height: 100%;
     }
 </style>

@@ -10,6 +10,8 @@ import RawTool     from '@editorjs/raw'
 import CodeTool    from '@editorjs/code'
 import ColorPlugin from 'editorjs-text-color-plugin'
 
+import SimpleImage from '../../editorjs/image'
+
 export default {
     components: {
         Error
@@ -73,6 +75,8 @@ export default {
                                 }       
                             },
 
+                            image: SimpleImage,
+
                             header: Header,
                             code: CodeTool,
                             raw: RawTool,
@@ -130,10 +134,27 @@ export default {
         min-height: var(--index-height);
     }
     .index > .article {
-        max-width: 60rem;
         margin: 0 auto;
+        max-width: 60rem;
     }
     .index > .article > h1 {
+        padding-left: 1rem;
         margin-bottom: 1rem;
+        border: 3px solid #fff;
+        background: linear-gradient(to right, #002B5B, #EA5455);
+    }
+
+    /**/
+    .simple-image {
+        width: 100%;
+        display: flex;
+        margin: 1rem 0;
+        max-height: 30rem;
+        align-items: center;
+        justify-content: center;
+    }
+    .simple-image > img {
+        max-width: 100%;
+        max-height: 100%;
     }
 </style>

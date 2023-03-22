@@ -48,13 +48,6 @@ const slugDetail = async( async(req, res, next) => {
 const createContent = async( async(req, res, next) => {
     const { title, file, outputData } = req.body
 
-    const contentBlocks = outputData.blocks
-    const imageBlocks = contentBlocks.filter(block => block.type === 'image')
-
-    imageBlocks.forEach(block => {
-        console.log(block)
-    })
-
     const content = await Content.create({
         title : title,
         file  : file,

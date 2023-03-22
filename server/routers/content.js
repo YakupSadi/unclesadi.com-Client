@@ -1,6 +1,7 @@
-const auth    = require('../middleware/auth')
 const express = require('express')
 const Content = express.Router()
+const multer  = require('multer')
+const auth    = require('../middleware/auth')
 
 
 const {

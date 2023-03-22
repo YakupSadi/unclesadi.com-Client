@@ -1,23 +1,26 @@
 const express         = require('express')
 const File            = express.Router()
+const multer          = require('multer')
 const auth            = require('../middleware/auth')
 const { CustomError } = require('../middleware/custom_error')
 
 
-// Multer
-const multer  = require('multer')
 const multerLimits = multer({
-    limits: 1024 * 1024 * 1,
+    limits: 1024 * 1024 * 5,
+    
     fileFilter: (req, file, cb) => {
         if(!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
             return cb(new CustomError('Image Not Found'))
         }
+        
         cb(null, true)
     },
+
     storage: multer.diskStorage({
         filename: (req, file, cb) => {
-            cb(null, `${Date.now()}-${file.originalname}`)
+            cb(null, `${Date.now()}-${Math.round(Math.random() * 1E9)}`)
         },
+        
         destination: (req, file, cb) => {
             cb(null, 'uploads/')
         }

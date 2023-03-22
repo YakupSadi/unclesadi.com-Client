@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path')
-const File = require('../models/file')
-const async = require('../middleware/asycn')
+const fs              = require('fs');
+const path            = require('path')
+const File            = require('../models/file')
+const async           = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
 
 
@@ -34,11 +34,8 @@ const createFile = async( async(req, res, next) => {
 
 const updateFile = async( async(req, res, next) => {
     const { title, folder, old } = req.body
-    const image                  = a = req.file ? req.file.path : old
     const { id: dataID }         = req.params
-
-    console.log(image)
-    console.log(old)
+    const image                  = a = req.file ? req.file.path : old
 
     if(!title || !folder) {
         return next(new CustomError('File or Title or Folder Not Found'))
@@ -69,9 +66,9 @@ const updateFile = async( async(req, res, next) => {
 
 
 const deleteFile = async( async(req, res, next) => {
-    const { image } = req.body
+    const { image }      = req.body
     const { id: dataID } = req.params
-    const data = await File.findOneAndDelete({ _id: dataID })
+    const data           = await File.findOneAndDelete({ _id: dataID })
 
     if(!data) {
         return next(CustomError('File Not Found'))

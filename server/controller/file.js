@@ -28,7 +28,7 @@ const createFile = async( async(req, res, next) => {
     const file = new File({ title, folder, image })
     await file.save()
 
-    res.status(201).json({ msg: 'File Created'})
+    res.status(201).json({ msg: 'File Created' })
 })
 
 

@@ -7,20 +7,21 @@ const { CustomError } = require('../middleware/custom_error')
 
 const multerLimits = multer({
     limits: 1024 * 1024 * 5,
-    
+
     fileFilter: (req, file, cb) => {
         if(!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
             return cb(new CustomError('Image Not Found'))
         }
-        
+
         cb(null, true)
     },
 
     storage: multer.diskStorage({
         filename: (req, file, cb) => {
-            cb(null, `${Date.now()}-${Math.round(Math.random() * 1E9)}`)
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+            cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.originalname.split('.').pop())
         },
-        
+
         destination: (req, file, cb) => {
             cb(null, 'uploads/')
         }

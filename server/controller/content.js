@@ -62,6 +62,17 @@ const createContent = async( async(req, res, next) => {
 })
 
 
+const img = async( async(req, res, next) => {
+    const image = req.file.path
+
+    if(!image) {
+        return next(new CustomError('File or Title or Folder Not Found'))
+    }
+
+    res.status(201).json({ image })
+})
+
+
 const updateContent = async( async(req, res, next) => {
     const { id: dataID } = req.params
     const content = {
@@ -96,6 +107,7 @@ const deleteContent = async( async(req, res, next) => {
 
 
 module.exports = {
+    img,
     getSlug,
     getContent,
     slugDetail,

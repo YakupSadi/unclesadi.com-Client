@@ -11,8 +11,8 @@ const port = process.env.PORT || 4000
 const connectDB = require('./db/connect')
 
 // Cors
-const cors = require('cors');
-app.use(cors());
+const cors = require('cors')
+app.use(cors())
 
 // Cookie
 const cookieParser = require('cookie-parser')
@@ -23,7 +23,7 @@ const errorHandler = require('./middleware/error')
 app.use(errorHandler)
 
 // Uploads
-app.use(express.static('public/uploads'));
+app.use(express.static('public/uploads'))
 
 
 // Routers
@@ -42,14 +42,14 @@ app.use('/api/v1/', Content)
 
 // Listen
 const start = async () => {
-  try 
-  {
-      await connectDB(process.env.MONGO_URL)
-      app.listen(port, () => console.log(` Server is listening on port: http://localhost:${port} `))
-  }
-  catch (err)
-  {
-      console.log(err)
-  }
+    try 
+    {
+        await connectDB(process.env.MONGO_URL)
+        app.listen(port, () => console.log(` Server is listening on port: http://localhost:${port} `))
+    }
+    catch (err)
+    {
+        console.log(err)
+    }
 }
 start()

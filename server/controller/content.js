@@ -1,3 +1,5 @@
+const fs              = require('fs')
+const path            = require('path')
 const Content         = require('../models/content')
 const async           = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
@@ -62,14 +64,38 @@ const createContent = async( async(req, res, next) => {
 })
 
 
-const img = async( async(req, res, next) => {
+const editorImg = async( async(req, res, next) => {
     const image = req.file.path
+    const old   = req.body
+
+    if(old.oldImg !== 'undefined') {
+        fs.unlink(path.join(__dirname, '../', old.oldImg.slice(34)), (err) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+    }
 
     if(!image) {
         return next(new CustomError('File or Title or Folder Not Found'))
     }
 
-    res.status(201).json({ image })
+    res.status(200).json({ image })
+})
+
+
+const deleteImg = async( async(req, res, next) => {
+    const del = req.body
+
+    if(del !== 'undefined') {
+        fs.unlink(path.join(__dirname, '../', del.del.slice(34)), (err) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+    }
+
+    res.status(200).json({ del })
 })
 
 
@@ -107,8 +133,9 @@ const deleteContent = async( async(req, res, next) => {
 
 
 module.exports = {
-    img,
     getSlug,
+    editorImg,
+    deleteImg,
     getContent,
     slugDetail,
     createContent,

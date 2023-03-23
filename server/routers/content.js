@@ -30,8 +30,9 @@ const multerLimits = multer({
 
 
 const {
-    img,
     getSlug,
+    editorImg,
+    deleteImg,
     getContent,
     slugDetail,
     getAllContent,
@@ -44,7 +45,8 @@ const {
 Content.route('/content').get(getAllContent)
 Content.route('/content/slug/:id').get(getSlug)
 Content.route('/detail/slug/:id').get(slugDetail)
-Content.route('/content/img').post(auth, multerLimits.single('image'), img)
+Content.route('/content/deleteImg').post(auth, deleteImg)
+Content.route('/content/editorImg').post(auth, multerLimits.single('image'), editorImg)
 Content.route('/content/createContent').post(auth, multerLimits.single('image'), createContent)
 
 Content.route('/content/:id')

@@ -44,7 +44,7 @@ const login = async (req, res, next) => {
 
     const isPasswordCorrect = await admin.comparePassword(password)
     if(!isPasswordCorrect) {
-        res.status(401).json({ msg: 'Password is Not Coorect' })
+        res.status(401).json({ msg: 'Password is Wrong' })
         return next(new CustomError('Password is Wrong', 401))
     }
 
@@ -75,7 +75,7 @@ const logOut = async (req, res, next) => {
 }
 
 
-const isValid = async (req, res, next) => {
+const isValid = async (req, res) => {
     res.json({ message: 'Token is Valid' })
 }
 

@@ -11,40 +11,25 @@ const getAllContent = async( async(req, res) => {
 })
 
 
-const getContent = async( async(req, res, next) => {
+const getContent = async( async(req, res) => {
     const { id: dataID } = req.params
     const data = await Content.findOne({ _id: dataID })
 
-    if(!data) {
-        res.status(204).json({ msg: 'Folder Not Found' })
-        return next(new CustomError('Folder Not Found'))
-    }
-
     res.status(200).json({ data })
 })
 
 
-const getSlug = async( async(req, res, next) => {
+const getSlug = async( async(req, res) => {
     const { id: dataTitle } = req.params
     const data = await Content.find({ file: dataTitle })
-    
-    if(!data) {
-        res.status(204).json({ msg: 'Folder Not Found' })
-        return next(new CustomError('Folder Not Found'))
-    }
 
     res.status(200).json({ data })
 })
 
 
-const slugDetail = async( async(req, res, next) => {
+const slugDetail = async( async(req, res) => {
     const { id: dataTitle } = req.params
     const data = await Content.findOne({ title: dataTitle })
-
-    if(!data) {
-        res.status(204).json({ msg: 'Folder Not Found' })
-        return next(new CustomError('Content Not Found'))
-    }
 
     res.status(200).json({ data })
 })
@@ -60,7 +45,6 @@ const createContent = async( async(req, res, next) => {
     })
 
     if(!content) {
-        res.json({ msg: 'Content Not Created' })
         return next(new CustomError('Content Not Created'))
     }
 
@@ -68,9 +52,14 @@ const createContent = async( async(req, res, next) => {
 })
 
 
-const editorImg = async( async(req, res, next) => {
+
+const editorImg = async( async(req, res) => {
     const image = req.file.path
     const old   = req.body
+
+    if(!image) {
+        return next(new CustomError('Image Not Found'))
+    }
 
     if(old.oldImg !== 'undefined') {
         fs.unlink(path.join(__dirname, '../', old.oldImg.slice(34)), (err) => {
@@ -80,16 +69,11 @@ const editorImg = async( async(req, res, next) => {
         })
     }
 
-    if(!image) {
-        res.json({ msg: 'Image Not Found' })
-        return next(new CustomError('Image Not Found'))
-    }
-
     res.status(200).json({ image })
 })
 
 
-const deleteImg = async( async(req, res, next) => {
+const deleteImg = async( async(req, res) => {
     const del = req.body
 
     if(del !== 'undefined') {
@@ -104,7 +88,7 @@ const deleteImg = async( async(req, res, next) => {
 })
 
 
-const updateContent = async( async(req, res, next) => {
+const updateContent = async( async(req, res) => {
     const { id: dataID } = req.params
     const content = {
         title : req.body.title,
@@ -118,7 +102,6 @@ const updateContent = async( async(req, res, next) => {
     })
 
     if(!data) {
-        res.status(204).json({ msg: 'Content Not Updated' })
         return next(new CustomError('Content Not Updated'))
     }
 
@@ -126,7 +109,7 @@ const updateContent = async( async(req, res, next) => {
 })
 
 
-const deleteContent = async( async(req, res, next) => {
+const deleteContent = async( async(req, res) => {
     const { id: dataID } = req.params
     const data = await Content.findOneAndDelete({ _id: dataID })
 

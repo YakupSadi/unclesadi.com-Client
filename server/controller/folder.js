@@ -9,12 +9,11 @@ const getAllFolder = async( async(req, res) => {
 })
 
 
-const createFolder = async( async(req, res) => {
+const createFolder = async( async(req, res, next) => {
     const data = await Folder.create(req.body)
 
     if(!data) {
-        res.json({ msg: 'Folder Not Found' })
-        return next(new CustomError('Folder Not Found'))
+        return next(new CustomError('Folder Not Created'))
     }
 
     res.status(201).json({ msg: 'Folder Created' })
@@ -29,7 +28,6 @@ const updateFolder = async( async(req, res, next) => {
     })
 
     if(!data) {
-        res.json({ msg: 'Folder Not Updated' })
         return next(new CustomError('Folder Not Updated'))
     }
 
@@ -42,7 +40,6 @@ const deleteFolder = async( async(req, res, next) => {
     const data = await Folder.findOneAndDelete({ _id: dataID })
 
     if(!data) {
-        res.json({ msg: 'Folder Not Deleted' })
         return next(CustomError('Folder Not Deleted'))
     }
 

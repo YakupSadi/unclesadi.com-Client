@@ -6,7 +6,7 @@ const { CustomError } = require('../middleware/custom_error')
 
 
 const getAllContent = async( async(req, res) => {
-    const data = await Content.find({})
+    const data = await Content.find().sort({ createdAt: -1 })
     res.status(200).json({ data })
 })
 
@@ -16,7 +16,8 @@ const getContent = async( async(req, res, next) => {
     const data = await Content.findOne({ _id: dataID })
 
     if(!data) {
-        return next(new CustomError('Folder not Found'))
+        res.status(204).json({ msg: 'Folder Not Found' })
+        return next(new CustomError('Folder Not Found'))
     }
 
     res.status(200).json({ data })
@@ -28,7 +29,8 @@ const getSlug = async( async(req, res, next) => {
     const data = await Content.find({ file: dataTitle })
     
     if(!data) {
-        return next(new CustomError('Folder not Found'))
+        res.status(204).json({ msg: 'Folder Not Found' })
+        return next(new CustomError('Folder Not Found'))
     }
 
     res.status(200).json({ data })
@@ -40,7 +42,8 @@ const slugDetail = async( async(req, res, next) => {
     const data = await Content.findOne({ title: dataTitle })
 
     if(!data) {
-        return next(new CustomError('Content not Found'))
+        res.status(204).json({ msg: 'Folder Not Found' })
+        return next(new CustomError('Content Not Found'))
     }
 
     res.status(200).json({ data })
@@ -57,7 +60,8 @@ const createContent = async( async(req, res, next) => {
     })
 
     if(!content) {
-        return next(new CustomError('Content Not Found'))
+        res.json({ msg: 'Content Not Created' })
+        return next(new CustomError('Content Not Created'))
     }
 
     res.status(201).json({ msg: 'Content Created' })
@@ -77,7 +81,8 @@ const editorImg = async( async(req, res, next) => {
     }
 
     if(!image) {
-        return next(new CustomError('File or Title or Folder Not Found'))
+        res.json({ msg: 'Image Not Found' })
+        return next(new CustomError('Image Not Found'))
     }
 
     res.status(200).json({ image })
@@ -113,7 +118,8 @@ const updateContent = async( async(req, res, next) => {
     })
 
     if(!data) {
-        return next(new CustomError('Content Not Found'))
+        res.status(204).json({ msg: 'Content Not Updated' })
+        return next(new CustomError('Content Not Updated'))
     }
 
     res.status(200).json({ msg: 'Content Updated' })
@@ -125,7 +131,8 @@ const deleteContent = async( async(req, res, next) => {
     const data = await Content.findOneAndDelete({ _id: dataID })
 
     if(!data) {
-        return next(CustomError('Content Not Found'))
+        res.status(204).json({ msg: 'Content Not Deleted' })
+        return next(CustomError('Content Not Deleted'))
     }
 
     res.status(200).json({ msg: 'Content Deleted' })

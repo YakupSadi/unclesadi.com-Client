@@ -11,8 +11,14 @@ const getAllFile = async( async(req, res) => {
 })
 
 
-const getFile = async( async(req, res) => {
+const getFile = async( async(req, res, next) => {
     const image = req.params.image
+
+    if(!image) {
+        res.json({ msg: 'Image Not Found' })
+        return next(new CustomError('Image Not Found'))
+    }
+
     res.sendFile(path.join(__dirname, '../uploads', image))
 })
 
@@ -22,7 +28,8 @@ const createFile = async( async(req, res, next) => {
     const image = req.file.path
 
     if(!image || !title || !folder) {
-        return next(new CustomError('File or Title or Folder Not Found'))
+        res.json({ msg: 'File or Title or Folder is Blank' })
+        return next(new CustomError('File or Title or Folder is Blank'))
     }
 
     const file = new File({ title, folder, image })
@@ -38,7 +45,8 @@ const updateFile = async( async(req, res, next) => {
     const image                  = a = req.file ? req.file.path : old
 
     if(!title || !folder) {
-        return next(new CustomError('File or Title or Folder Not Found'))
+        res.json({ msg: 'Title or Folder is Blank' })
+        return next(new CustomError('Title or Folder is Blank'))
     }
 
     const data = await File.findOneAndUpdate({ _id: dataID }, {
@@ -50,7 +58,8 @@ const updateFile = async( async(req, res, next) => {
     })
 
     if(!data) {
-        return next(CustomError('File Not Found'))
+        res.json({ msg: 'File Not Updated' })
+        return next(CustomError('File Not Updated'))
     }
 
     if(old !== image) {
@@ -71,7 +80,8 @@ const deleteFile = async( async(req, res, next) => {
     const data           = await File.findOneAndDelete({ _id: dataID })
 
     if(!data) {
-        return next(CustomError('File Not Found'))
+        res.json({ msg: 'File Not Deleted' })
+        return next(CustomError('File Not Deleted'))
     }
 
     fs.unlink(path.join(__dirname, '../', image), (err) => {

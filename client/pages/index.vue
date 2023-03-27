@@ -2,9 +2,11 @@
 import axios  from 'axios'
 import Folder from '~/components/index/folder.vue';
 
+
 definePageMeta({
     layout: 'custom',
 })
+
 
 export default {
     components: {

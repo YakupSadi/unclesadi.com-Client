@@ -4,6 +4,7 @@ export default {
         'image',
         'title'
     ],
+    
     data() {
         return {
             urlImage: `http://localhost:4000/api/v1/file/${this.image}`

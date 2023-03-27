@@ -1,16 +1,15 @@
 <script>
-import { mapState } from 'vuex'
-import axios        from 'axios'
-import EditorJS     from '@editorjs/editorjs'
-import Error        from '../../components/error.vue'
+import axios       from 'axios'
+import EditorJS    from '@editorjs/editorjs'
+import Error       from '../../components/error.vue'
 
 import List        from '@editorjs/list'
 import Header      from '@editorjs/header'
-import RawTool     from '@editorjs/raw'
 import CodeTool    from '@editorjs/code'
 import ColorPlugin from 'editorjs-text-color-plugin'
 
 import SimpleImage from '../../editorjs/image'
+
 
 export default {
     components: {
@@ -28,10 +27,6 @@ export default {
     mounted() {
         this.slug = this.$route.fullPath.slice(1),
         this.getContent()
-    },
-    
-    computed: {
-        ...mapState(['content'])
     },
 
     methods: {
@@ -78,8 +73,7 @@ export default {
                             image: SimpleImage,
 
                             header: Header,
-                            code: CodeTool,
-                            raw: RawTool,
+                            code: CodeTool
                         }
                     })
 
@@ -145,6 +139,18 @@ export default {
     }
 
     /**/
+    #editorjs {
+        font-size: 1.3rem;
+    }
+
+    .ce-code > textarea {
+        resize: none;
+        color: #fff;
+        font-size: 1rem;
+        border-color: #1e2128;
+        background-color: #1e2128;
+    }
+
     .simple-image {
         width: 100%;
         display: flex;

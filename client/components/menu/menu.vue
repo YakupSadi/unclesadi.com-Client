@@ -32,6 +32,7 @@ export default {
         overflow-y: auto;
         border-style: solid;
         border-color: #fff;
+        transition: width .2s;
         height: calc(100vh - 4rem);
         border-width: 0 3px 3px 3px;
         background-color: #10A19D;

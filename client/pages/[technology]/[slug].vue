@@ -5,11 +5,11 @@ import Error       from '../../components/error.vue'
 
 import List        from '@editorjs/list'
 import Header      from '@editorjs/header'
-import RawTool     from '@editorjs/raw'
 import CodeTool    from '@editorjs/code'
 import ColorPlugin from 'editorjs-text-color-plugin'
 
 import SimpleImage from '../../editorjs/image'
+
 
 export default {
     data() {
@@ -28,8 +28,11 @@ export default {
     methods: {
         getContent() {
             const segments = this.slug.split("/")
+            const file = segments[0]
 
-            axios.get(`http://localhost:4000/api/v1/detail/slug/${segments[1]}`)
+            axios.get(`http://localhost:4000/api/v1/detail/slug/${segments[1]}`, {
+                params: { file: file }
+            })
             .then((res) => {
                 this.title = res.data.data.title
                 const data = { blocks: res.data.data.data }
@@ -69,14 +72,25 @@ export default {
                         image: SimpleImage,
 
                         header : Header,
-                        code   : CodeTool,
-                        raw    : RawTool,
+                        code   : CodeTool
                     }
                 })
             })
             .catch((err) => {
                 this.error = true
+            }),
+
+            axios.get(`http://localhost:4000/api/v1/content/slug/${segments[0]}`)
+            .then((res) => {
+                this.setContent(res.data.data)
             })
+            .catch((err) => {
+                this.error = true
+            })
+        },
+
+        setContent(value) {
+            this.$store.commit('getContent', value)
         }
     }
 }
@@ -116,14 +130,29 @@ export default {
         min-height: var(--index-height);
     }
     .index > .article {
-        max-width: 60rem;
         margin: 0 auto;
+        max-width: 60rem;
     }
     .index > .article > h1 {
+        padding-left: 1rem;
         margin-bottom: 1rem;
+        border: 3px solid #fff;
+        background: linear-gradient(to right, #002B5B, #EA5455);
     }
 
     /**/
+    #editorjs {
+        font-size: 1.3rem;
+    }
+
+    .ce-code > textarea {
+        resize: none;
+        color: #fff;
+        font-size: 1rem;
+        border-color: #1e2128;
+        background-color: #1e2128;
+    }
+
     .simple-image {
         width: 100%;
         display: flex;

@@ -5,31 +5,62 @@ const async           = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
 
 
+const search = async( async(req, res) => {
+    const query  = req.query.word
+    const file   = req.query.filter || 'All'
+
+    const results = await Content.find({
+        title: { 
+            $regex: `.*${query}.*`, 
+            $options: 'i' 
+        },
+
+        ...(file !== 'All' ? { file } : {})
+    })
+
+    res.status(200).json({ results })
+})
+
+
 const getAllContent = async( async(req, res) => {
     const data = await Content.find().sort({ createdAt: -1 })
     res.status(200).json({ data })
 })
 
 
-const getContent = async( async(req, res) => {
+const getContent = async( async(req, res, next) => {
     const { id: dataID } = req.params
     const data = await Content.findOne({ _id: dataID })
 
+    if(!data) {
+        return next(new CustomError('Content Not Found'))
+    }
+
     res.status(200).json({ data })
 })
 
 
-const getSlug = async( async(req, res) => {
+const getSlug = async( async(req, res, next) => {
     const { id: dataTitle } = req.params
     const data = await Content.find({ file: dataTitle })
 
+    if(!data) {
+        return next(new CustomError('Content Not Found'))
+    }
+
     res.status(200).json({ data })
 })
 
 
-const slugDetail = async( async(req, res) => {
+const slugDetail = async( async(req, res, next) => {
     const { id: dataTitle } = req.params
+    const { file }          = req.query
+
     const data = await Content.findOne({ title: dataTitle })
+
+    if(!data || !file || data.file != file) {
+        return next(new CustomError('Content Not Found'))
+    }
 
     res.status(200).json({ data })
 })
@@ -53,7 +84,7 @@ const createContent = async( async(req, res, next) => {
 
 
 
-const editorImg = async( async(req, res) => {
+const editorImg = async( async(req, res, next) => {
     const image = req.file.path
     const old   = req.body
 
@@ -88,7 +119,7 @@ const deleteImg = async( async(req, res) => {
 })
 
 
-const updateContent = async( async(req, res) => {
+const updateContent = async( async(req, res, next) => {
     const { id: dataID } = req.params
     const content = {
         title : req.body.title,
@@ -109,12 +140,11 @@ const updateContent = async( async(req, res) => {
 })
 
 
-const deleteContent = async( async(req, res) => {
+const deleteContent = async( async(req, res, next) => {
     const { id: dataID } = req.params
     const data = await Content.findOneAndDelete({ _id: dataID })
 
     if(!data) {
-        res.status(204).json({ msg: 'Content Not Deleted' })
         return next(CustomError('Content Not Deleted'))
     }
 
@@ -123,6 +153,7 @@ const deleteContent = async( async(req, res) => {
 
 
 module.exports = {
+    search,
     getSlug,
     editorImg,
     deleteImg,

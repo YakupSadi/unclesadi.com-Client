@@ -5,8 +5,7 @@ const FileSchema = new mongoose.Schema({
     title: {
         type     : String,
         required : true,
-        unique   : true,
-        trim     : true
+        unique   : true
     },
     
     folder: {

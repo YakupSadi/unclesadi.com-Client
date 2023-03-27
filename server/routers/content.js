@@ -30,6 +30,7 @@ const multerLimits = multer({
 
 
 const {
+    search,
     getSlug,
     editorImg,
     deleteImg,
@@ -42,6 +43,7 @@ const {
 } = require('../controller/content')
 
 
+Content.route('/search').get(search)
 Content.route('/content').get(getAllContent)
 Content.route('/content/slug/:id').get(getSlug)
 Content.route('/detail/slug/:id').get(slugDetail)

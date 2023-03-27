@@ -11,7 +11,7 @@ const getAllFile = async( async(req, res) => {
 })
 
 
-const getFile = async( async(req, res) => {
+const getFile = async( async(req, res, next) => {
     const image = req.params.image
 
     if(!image) {
@@ -22,7 +22,7 @@ const getFile = async( async(req, res) => {
 })
 
 
-const createFile = async( async(req, res) => {
+const createFile = async( async(req, res, next) => {
     const { title, folder } = req.body
     const image = req.file.path
 

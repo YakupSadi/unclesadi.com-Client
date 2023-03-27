@@ -3,7 +3,7 @@ const async           = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
 
 
-const getAllFolder = async( async(req, res) => {
+const getAllFolder = async( async(req, res, next) => {
     const data = await Folder.find({})
     res.status(200).json({ data })
 })

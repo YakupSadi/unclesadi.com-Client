@@ -12,6 +12,10 @@ import SimpleImage from '../../editorjs/image'
 
 
 export default {
+    components: {
+        Error
+    },
+
     data() {
         return {
             slug  : '',
@@ -69,8 +73,8 @@ export default {
                             }       
                         },
 
-                        code  : Code,
-                        image : SimpleImage,
+                        code   : Code,
+                        image  : SimpleImage,
 
                         header : Header,
                     }

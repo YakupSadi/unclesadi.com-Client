@@ -37,13 +37,17 @@ export default {
         border-width: 0 3px 3px 3px;
         background-color: #10A19D;
     }
+
+    /* Scroll */
     .menu::-webkit-scrollbar {
         width: .5em;
     }
     .menu::-webkit-scrollbar-thumb {
         background-color: #fff;
     }
-    
+
+
+    /* Media Query */
     @media (min-width: 36em) { 
         .menu {
             width: 25rem;

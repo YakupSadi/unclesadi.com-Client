@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 const ContentSchema = new mongoose.Schema({
     title: {
         type     : String,
-        unique   : true,
         required : true
     },
 

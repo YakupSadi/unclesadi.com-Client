@@ -69,19 +69,25 @@ const slugDetail = async( async(req, res, next) => {
 const createContent = async( async(req, res, next) => {
     const { title, file, outputData } = req.body
 
-    const content = await Content.create({
-        title : title,
-        file  : file,
-        data  : outputData.blocks
-    })
+    const data = await Content.find({ file: file })
+    const titles = data.map(d => d.title)
 
-    if(!content) {
-        return next(new CustomError('Content Not Created'))
+    if(titles.length >= 1) {
+        return next(new CustomError('Title Already Declared!'))
+    } else {
+        const content = await Content.create({
+            title : title,
+            file  : file,
+            data  : outputData.blocks
+        })
+        
+        if(!content) {
+            return next(new CustomError('Content Not Created'))
+        }
     }
 
     res.status(201).json({ msg: 'Content Created' })
 })
-
 
 
 const editorImg = async( async(req, res, next) => {

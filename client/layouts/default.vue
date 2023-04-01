@@ -17,11 +17,11 @@ export default {
         this.pageWidth = window.innerWidth
         window.addEventListener('resize', this.handleResize)
     },
-    
+
     beforeDestroy() {
         window.removeEventListener('resize', this.handleResize);
     },
-    
+
     methods: {
         preventDefault(e) {
             e.preventDefault()
@@ -31,12 +31,12 @@ export default {
             const body = document.querySelector('body')
             body.style.overflowY = 'auto'
         },
-        
+
         disableScroll() {
             const body = document.querySelector('body')
             body.style.overflow = 'hidden'
         },
-        
+
         handleResize() {
             if (window.innerWidth < 600 && this.menu) {
                 this.disableScroll()
@@ -44,7 +44,7 @@ export default {
                 this.enableScroll()
             }
         },
-        
+
         showMenu() {
             this.menu = !this.menu
             this.handleResize()
@@ -94,6 +94,8 @@ export default {
         justify-content: space-between;
         border-bottom: 3px solid #fff;
     }
+
+    /* logo */
     .header > .logo {
         width: 5rem;
         height: 5rem;
@@ -105,9 +107,13 @@ export default {
         width: 70%;
         height: 70%;
     }
+
+    /* menu */
     .header > .menu {
         height: 2.8rem;
     }
+
+    /* icon */
     .header > .menu_icon > button > .icon {
         padding: 10px;
         color: #fff;
@@ -115,6 +121,7 @@ export default {
         font-size: 1.7rem;
     }
 
+    /* footer */
     .footer {
         height: 3rem;
         display: flex;
@@ -122,32 +129,39 @@ export default {
         justify-content: center;
     }
 
+
+    /* transition */
     .transition-enter-active,
     .transition-leave-active {
         transition: .3s;
         margin-left: 0;
     }
+
     .transition-enter-from,
     .transition-leave-to {
         margin-left: -100vw;
     }
 
 
+    /* Media Query */
     @media (min-width: 36em) { 
         .header {
             padding: 0 2rem;
         }
 
+        /* transition */
         .transition-enter-from,
         .transition-leave-to {
             margin-left: -25rem;
         }
     }
+
     @media (min-width: 48em) {
         .header {
             padding: 0 3rem;
         }  
     }
+
     @media (min-width: 62em) {
         .header {
             padding: 0 4rem;

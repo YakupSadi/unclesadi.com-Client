@@ -32,6 +32,8 @@
         justify-content: space-between;
         border-bottom: 3px solid #fff;
     }
+
+    /* logo */
     .header > .logo {
         width: 5rem;
         height: 5rem;
@@ -43,10 +45,13 @@
         width: 70%;
         height: 70%;
     }
+
+    /* menu */
     .header > .menu {
         height: 2.8rem;
     }
 
+    /* footer */
     .footer {
         height: 3rem;
         display: flex;
@@ -54,16 +59,20 @@
         justify-content: center;
     }
 
+
+    /* Media Query */
     @media (min-width: 36em) { 
         .header {
             padding: 0 2rem;
         }
     }
+
     @media (min-width: 48em) {
         .header {
             padding: 0 3rem;
         }  
     }
+
     @media (min-width: 62em) {
         .header {
             padding: 0 4rem;

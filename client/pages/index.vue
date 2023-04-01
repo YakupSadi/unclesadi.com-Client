@@ -67,7 +67,7 @@ export default {
         flex-wrap: wrap;
         max-width: 100rem;
         flex-direction: row;
-        padding: 6rem 2rem 2rem;
+        padding: 8rem 2rem 2rem;
         justify-content: space-evenly;
         min-height: var(--index-height);
     }

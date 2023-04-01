@@ -23,7 +23,7 @@
 <style scoped>
     .header {
         width: 100%;
-        height: 4rem;
+        height: 5rem;
         display: flex;
         padding: 0 1rem;
         position: fixed;
@@ -33,8 +33,8 @@
         border-bottom: 3px solid #fff;
     }
     .header > .logo {
-        width: 4rem;
-        height: 4rem;
+        width: 5rem;
+        height: 5rem;
         display: flex;
         align-items: center;
         justify-content: center;

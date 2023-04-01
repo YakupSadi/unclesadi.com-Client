@@ -5,9 +5,9 @@ import Error       from '../../components/error.vue'
 
 import List        from '@editorjs/list'
 import Header      from '@editorjs/header'
-import CodeTool    from '@editorjs/code'
 import ColorPlugin from 'editorjs-text-color-plugin'
 
+import Code        from '../../editorjs/code'
 import SimpleImage from '../../editorjs/image'
 
 
@@ -69,10 +69,10 @@ export default {
                             }       
                         },
 
-                        image: SimpleImage,
+                        code  : Code,
+                        image : SimpleImage,
 
                         header : Header,
-                        code   : CodeTool
                     }
                 })
             })
@@ -126,7 +126,7 @@ export default {
     .index {
         color: #fff;
         max-width: 100rem;
-        padding: 6rem 2rem 2rem;
+        padding: 8rem 2rem 2rem;
         min-height: var(--index-height);
     }
     .index > .article {
@@ -135,22 +135,20 @@ export default {
     }
     .index > .article > h1 {
         padding-left: 1rem;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
         border: 3px solid #fff;
         background: linear-gradient(to right, #002B5B, #EA5455);
     }
 
-    /**/
+
+    /* editorjs */
     #editorjs {
         font-size: 1.3rem;
     }
 
-    .ce-code > textarea {
-        resize: none;
-        color: #fff;
-        font-size: 1rem;
-        border-color: #1e2128;
-        background-color: #1e2128;
+    .ce-block__content,
+    .ce-toolbar__content {
+        max-width: unset;
     }
 
     .simple-image {
@@ -164,5 +162,15 @@ export default {
     .simple-image > img {
         max-width: 100%;
         max-height: 100%;
+    }
+
+    pre {
+        padding: 1rem;
+        margin: 1rem 0;
+        overflow: auto;
+        font-size: 1rem;
+        border-radius: 3px;
+        border: 3px solid #fff;
+        background-color: #1b1b1b;
     }
 </style>

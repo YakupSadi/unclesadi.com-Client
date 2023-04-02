@@ -10,7 +10,7 @@ const multerLimits = multer({
 
     fileFilter: (req, file, cb) => {
         if(!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-            return cb(new CustomError('Image Not Found'))
+            return cb(new CustomError('Please Upload an Image'))
         }
 
         cb(null, true)

@@ -42,8 +42,9 @@ const updateFile = async( async(req, res, next) => {
     const { id: dataID }         = req.params
     const image                  = a = req.file ? req.file.path : old
 
-    if(!title || !folder) {
-        return next(new CustomError('Title and Folder Required'))
+    if(!title || !folder || !image) {
+        res.status(422).json({ msg: 'Title or Folder Blank' })
+        return next(new CustomError('Title or Folder Blank'))
     }
 
     const data = await File.findOneAndUpdate({ _id: dataID }, {

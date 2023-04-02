@@ -72,7 +72,7 @@ const createContent = async( async(req, res, next) => {
     const data = await Content.find({ file: file })
     const titles = data.map(d => d.title)
 
-    if(titles.length >= 1) {
+    if(titles.includes(title)) {
         return next(new CustomError('Title Already Declared!'))
     } else {
         const content = await Content.create({
@@ -131,6 +131,10 @@ const updateContent = async( async(req, res, next) => {
         title : req.body.title,
         file  : req.body.file,
         data  : req.body.outputData.blocks
+    }
+
+    if(!content.title || !content.file) {
+        res.status(422).json({ msg: 'Title or File Blank' })
     }
 
     const data = await Content.findOneAndUpdate({ _id: dataID }, content, {

@@ -22,6 +22,13 @@ const createFolder = async( async(req, res, next) => {
 
 const updateFolder = async( async(req, res, next) => {
     const { id: dataID } = req.params
+    const { title, background } = req.body
+
+    if(!title || !background) {
+        res.status(422).json({ msg: 'Title or Color Blank' })
+        return next(new CustomError('Title or Color Blank', 422))
+    }
+
     const data = await Folder.findOneAndUpdate({ _id: dataID }, req.body, {
         new: true,
         runValidators: true

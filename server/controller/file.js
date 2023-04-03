@@ -7,6 +7,7 @@ const { CustomError } = require('../middleware/custom_error')
 
 const getAllFile = async( async(req, res) => {
     const data = await File.find({})
+
     res.status(200).json({ data })
 })
 
@@ -15,7 +16,8 @@ const getFile = async( async(req, res, next) => {
     const image = req.params.image
 
     if(!image) {
-        return next(new CustomError('Image Not Found'))
+        res.status(404).json({ msg: 'Image Not Found' })
+        return next(new CustomError('Image Not Found', 404))
     }
 
     res.sendFile(path.join(__dirname, '../uploads', image))
@@ -24,10 +26,11 @@ const getFile = async( async(req, res, next) => {
 
 const createFile = async( async(req, res, next) => {
     const { title, folder } = req.body
-    const image = req.file.path
+    const image             = req.file.path
 
     if(!image || !title || !folder) {
-        return next(new CustomError('File, Title and Folder Required'))
+        res.status(400).json({ msg: 'Title, Image or Folder Field Cannot Be Empty' })
+        return next(new CustomError('Title, Image or Folder Field Cannot Be Empty', 400))
     }
 
     const file = new File({ title, folder, image })
@@ -42,22 +45,23 @@ const updateFile = async( async(req, res, next) => {
     const { id: dataID }         = req.params
     const image                  = a = req.file ? req.file.path : old
 
-    if(!title || !folder || !image) {
-        res.status(422).json({ msg: 'Title or Folder Blank' })
-        return next(new CustomError('Title or Folder Blank'))
+    if (!dataID) {
+        res.status(400).json({ msg: 'ID Field Cannot Be Empty' })
+        return next(new CustomError('ID Field Cannot Be Empty', 400))
     }
 
-    const data = await File.findOneAndUpdate({ _id: dataID }, {
+    if(!title || !folder) {
+        res.status(400).json({ msg: 'Title or Folder Field Cannot Be Empty' })
+        return next(new CustomError('Title or Folder Field Cannot Be Empty', 400))
+    }
+
+    await File.findOneAndUpdate({ _id: dataID }, {
         new    : true,
         title  : title,
         folder : folder,
         image  : image,
         runValidators: true
     })
-
-    if(!data) {
-        return next(CustomError('File Not Updated'))
-    }
 
     if(old !== image) {
         fs.unlink(path.join(__dirname, '../', old), (err) => {
@@ -74,10 +78,15 @@ const updateFile = async( async(req, res, next) => {
 const deleteFile = async( async(req, res, next) => {
     const { image }      = req.body
     const { id: dataID } = req.params
-    const data           = await File.findOneAndDelete({ _id: dataID })
 
-    if(!data) {
-        return next(CustomError('File Not Deleted'))
+    if (!dataID) {
+        res.status(400).json({ msg: 'ID Field Cannot Be Empty' })
+        return next(new CustomError('ID Field Cannot Be Empty', 400))
+    }
+
+    if(!image) {
+        res.status(400).json({ msg: 'Image Field Cannot Be Empty' })
+        return next(new CustomError('Image Field Cannot Be Empty', 400))
     }
 
     fs.unlink(path.join(__dirname, '../', image), (err) => {
@@ -85,6 +94,8 @@ const deleteFile = async( async(req, res, next) => {
             return next(new CustomError('Something Went Wrong'))
         }
     })
+
+    await File.findOneAndDelete({ _id: dataID })
 
     res.status(200).json({ msg: 'File Deleted' })
 })

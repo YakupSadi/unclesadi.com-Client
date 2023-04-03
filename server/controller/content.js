@@ -11,8 +11,8 @@ const search = async( async(req, res) => {
 
     const results = await Content.find({
         title: { 
-            $regex: `.*${query}.*`, 
-            $options: 'i' 
+            $regex   : `.*${query}.*`, 
+            $options : 'i' 
         },
 
         ...(file !== 'All' ? { file } : {})
@@ -24,17 +24,20 @@ const search = async( async(req, res) => {
 
 const getAllContent = async( async(req, res) => {
     const data = await Content.find().sort({ createdAt: -1 })
+
     res.status(200).json({ data })
 })
 
 
 const getContent = async( async(req, res, next) => {
     const { id: dataID } = req.params
-    const data = await Content.findOne({ _id: dataID })
 
-    if(!data) {
-        return next(new CustomError('Content Not Found'))
+    if (!dataID) {
+        res.status(404).json({ msg: 'Data Not Founded' })
+        return next(new CustomError('Data Not Founded', 404))
     }
+
+    const data = await Content.findOne({ _id: dataID })
 
     res.status(200).json({ data })
 })
@@ -42,11 +45,13 @@ const getContent = async( async(req, res, next) => {
 
 const getSlug = async( async(req, res, next) => {
     const { id: dataTitle } = req.params
-    const data = await Content.find({ file: dataTitle })
 
-    if(!data) {
-        return next(new CustomError('Content Not Found'))
+    if (!dataTitle) {
+        res.status(404).json({ msg: 'Data Not Founded' })
+        return next(new CustomError('Data Not Founded', 404))
     }
+
+    const data = await Content.find({ file: dataTitle })
 
     res.status(200).json({ data })
 })
@@ -56,11 +61,17 @@ const slugDetail = async( async(req, res, next) => {
     const { id: dataTitle } = req.params
     const { file }          = req.query
 
-    const data = await Content.findOne({ title: dataTitle })
-
-    if(!data || !file || data.file != file) {
-        return next(new CustomError('Content Not Found'))
+    if (!dataTitle) {
+        res.status(404).json({ msg: 'Data Not Founded' })
+        return next(new CustomError('Data Not Founded', 404))
     }
+
+    if(!file) {
+        res.status(404).json({ msg: 'Data Not Founded' })
+        return next(new CustomError('Data Not Founded', 404))
+    }
+
+    const data = await Content.findOne({ title: dataTitle })
 
     res.status(200).json({ data })
 })
@@ -69,21 +80,23 @@ const slugDetail = async( async(req, res, next) => {
 const createContent = async( async(req, res, next) => {
     const { title, file, outputData } = req.body
 
-    const data = await Content.find({ file: file })
+    if(!title || !file) {
+        res.status(400).json({ msg: 'Title or File Field Cannot Be Empty' })
+        return next(new CustomError('Title or File Field Cannot Be Empty', 400))
+    }
+
+    const data   = await Content.find({ file: file })
     const titles = data.map(d => d.title)
 
     if(titles.includes(title)) {
-        return next(new CustomError('Title Already Declared!'))
+        res.status(400).json({ msg: 'Title Already Declared' })
+        return next(new CustomError('Title Already Declared', 400))
     } else {
-        const content = await Content.create({
+        await Content.create({
             title : title,
             file  : file,
             data  : outputData.blocks
         })
-        
-        if(!content) {
-            return next(new CustomError('Content Not Created'))
-        }
     }
 
     res.status(201).json({ msg: 'Content Created' })
@@ -95,7 +108,8 @@ const editorImg = async( async(req, res, next) => {
     const old   = req.body
 
     if(!image) {
-        return next(new CustomError('Image Not Found'))
+        res.status(400).json({ msg: 'Title or File Field Cannot Be Empty' })
+        return next(new CustomError('Title or File Field Cannot Be Empty', 400))
     }
 
     if(old.oldImg !== 'undefined') {
@@ -127,6 +141,12 @@ const deleteImg = async( async(req, res) => {
 
 const updateContent = async( async(req, res, next) => {
     const { id: dataID } = req.params
+
+    if (!dataID) {
+        res.status(400).json({ msg: 'ID Field Cannot Be Empty' })
+        return next(new CustomError('ID Field Cannot Be Empty', 400))
+    }
+
     const content = {
         title : req.body.title,
         file  : req.body.file,
@@ -134,17 +154,14 @@ const updateContent = async( async(req, res, next) => {
     }
 
     if(!content.title || !content.file) {
-        res.status(422).json({ msg: 'Title or File Blank' })
+        res.status(400).json({ msg: 'Title or File Field Cannot Be Empty' })
+        return next(new CustomError('Title or Background Field Cannot Be Empty', 400))
     }
 
-    const data = await Content.findOneAndUpdate({ _id: dataID }, content, {
+    await Content.findOneAndUpdate({ _id: dataID }, content, {
         new           : true,
         runValidators : true
     })
-
-    if(!data) {
-        return next(new CustomError('Content Not Updated'))
-    }
 
     res.status(200).json({ msg: 'Content Updated' })
 })
@@ -152,11 +169,13 @@ const updateContent = async( async(req, res, next) => {
 
 const deleteContent = async( async(req, res, next) => {
     const { id: dataID } = req.params
-    const data = await Content.findOneAndDelete({ _id: dataID })
 
-    if(!data) {
-        return next(CustomError('Content Not Deleted'))
+    if (!dataID) {
+        res.status(400).json({ msg: 'ID Field Cannot Be Empty' })
+        return next(new CustomError('ID Field Cannot Be Empty', 400))
     }
+
+    await Content.findOneAndDelete({ _id: dataID })
 
     res.status(200).json({ msg: 'Content Deleted' })
 })

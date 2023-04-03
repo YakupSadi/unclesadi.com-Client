@@ -7,6 +7,11 @@ const { CustomError } = require('../middleware/custom_error.js')
 const register = async (req, res, next) => {
     const { email, password } = req.body
 
+    if(!email || !password) {
+        res.status(400).json({ msg: 'Email or Password Field Cannot Be Empty' })
+        return next(new CustomError('Email or Password Field Cannot Be Empty', 400))
+    }
+
     const emailAlreadyExist = await Admin.findOne({ email })
     if(emailAlreadyExist) {
         res.status(400).json({ msg: 'Email Already Exist' })
@@ -34,20 +39,20 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
     const { email, password } = req.body
     if(!email || !password) {
-        res.status(400).json({ msg: 'Email or Password are Blank' })
-        return next(new CustomError('Please Provide Email or Password', 400))
+        res.status(400).json({ msg: 'Email or Password Field Cannot Be Empty' })
+        return next(new CustomError('Email or Password Field Cannot Be Empty', 400))
     }
 
     const admin = await Admin.findOne({ email })
     if (!admin) {
-        res.status(401).json({ msg: 'Admin Not Found' })
-        return next(new CustomError('Admin Not Found', 401))
+        res.status(404).json({ msg: 'User Not Found' })
+        return next(new CustomError('User Not Found', 404))
     }
 
     const isPasswordCorrect = await admin.comparePassword(password)
     if(!isPasswordCorrect) {
-        res.status(401).json({ msg: 'Password is Wrong' })
-        return next(new CustomError('Password is Wrong', 401))
+        res.status(403).json({ msg: 'Password is Wrong' })
+        return next(new CustomError('Password is Wrong', 403))
     }
 
     const token = admin.createJWT()
@@ -70,15 +75,18 @@ const login = async (req, res, next) => {
 const getInfo = async (req, res, next) => {
     let token
     const authHeader = req.headers.authorization
-    
+
     if (authHeader && authHeader.startsWith('Bearer')) {
         token = authHeader.split(' ')[1]
     }
 
-    if (!token) { return next(new CustomError('Not Found Token')) }
+    if (!token) {
+        res.status(401).json({ msg: 'Token Not Found' })
+        return next(new CustomError('Token Not Found', 401))
+    }
 
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    const info = payload.email
+    const info    = payload.email
 
     res.status(200).json({ info })
 }
@@ -90,41 +98,46 @@ const changeEmail = async( req, res, next) => {
     const authHeader    = req.headers.authorization
 
     if(!new_email) {
-        return next(new CustomError('Email is Blank'))
+        res.status(400).json({ msg: 'Email Field Cannot Be Empty' })
+        return next(new CustomError('Email Field Cannot Be Empty', 400))
     }
 
     if (authHeader && authHeader.startsWith('Bearer')) {
         token = authHeader.split(' ')[1]
     }
 
-    if (!token) { 
-        return next(new CustomError('Not Found Token')) 
+    if (!token) {
+        res.status(401).json({ msg: 'Token Not Found' })
+        return next(new CustomError('Token Not Found', 401)) 
     }
 
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    const email = payload.email
+    const email   = payload.email
 
     if(new_email === email) {
-        return next(new CustomError('Your Old Email is the Same as Your New Email')) 
+        res.status(401).json({ msg: 'Your New Email Cannot Be The Same as Your Old Email' })
+        return next(new CustomError('Your New Email Cannot Be The Same as Your Old Email', 401))
     }
-
 
     //Check Email
     const admin = await Admin.findOne({ email })
-    if(!admin) { return next(new CustomError('User Not Found')) }
+    if(!admin) {
+        res.status(404).json({ msg: 'User Not Found' })
+        return next(new CustomError('User Not Found', 404))
+    }
 
+    const emailAlreadyExist = await Admin.findOne({ new_email })
+    if(emailAlreadyExist) {
+        res.status(400).json({ msg: 'Email Already Exist' })
+        return next(new CustomError('Email Already Exits', 400))
+    }
 
     // Update Password
-    const data = await Admin.findOneAndUpdate({ email: email }, {
+    await Admin.findOneAndUpdate({ email: email }, {
         new   : true,
         email : new_email,
         runValidators: true
     })
-
-    if(!data) {
-        return next(new CustomError('Email Updated'))
-    }
-
 
     // Return
     res.cookie('token', 'logOut', {
@@ -142,48 +155,46 @@ const changePassword = async( req, res, next) => {
     const authHeader             = req.headers.authorization
 
     if(!old_pass || !new_pass) {
-        return next(new CustomError('Password is Blank'))
+        res.status(400).json({ msg: 'Password Field Cannot Be Empty' })
+        return next(new CustomError('Password Field Cannot Be Empty', 400))
     }
 
     if (authHeader && authHeader.startsWith('Bearer')) {
         token = authHeader.split(' ')[1]
     }
 
-    if (!token) { return next(new CustomError('Not Found Token')) }
+    if (!token) {
+        res.status(401).json({ msg: 'Token Not Found' })
+        return next(new CustomError('Token Not Found', 401))
+    }
 
     const payload = jwt.verify(token, process.env.JWT_SECRET)
-    const email = payload.email
-
+    const email   = payload.email
 
     //Check Email
     const admin = await Admin.findOne({ email })
-    if(!admin) { return next(new CustomError('User Not Found')) }
-
+    if(!admin) {
+        res.status(404).json({ msg: 'User Not Found' })
+        return next(new CustomError('User Not Found', 404))
+    }
 
     //Check Password
     const isPasswordCorrect = await admin.comparePassword(old_pass)
-
     if(!isPasswordCorrect) {
-        return next(new CustomError('Password is Wrong'))
+        res.status(403).json({ msg: 'Password is Wrong' })
+        return next(new CustomError('Password is Wrong', 403))
     }
 
-    
     // Create New Password
     const salt     = await bcrypt.genSalt(10)
     const password = await bcrypt.hash(req.body.new_pass, salt)
 
-
     // Update Password
-    const data = await Admin.findOneAndUpdate({ email: email }, {
+    await Admin.findOneAndUpdate({ email: email }, {
         new      : true,
         password : password,
         runValidators: true
     })
-
-    if(!data) {
-        return next(new CustomError('Password Updated'))
-    }
-
 
     // Return
     res.cookie('token', 'logOut', {

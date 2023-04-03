@@ -5,38 +5,46 @@ const { CustomError } = require('../middleware/custom_error')
 
 const getAllFolder = async( async(req, res, next) => {
     const data = await Folder.find({})
+
     res.status(200).json({ data })
 })
 
 
 const createFolder = async( async(req, res, next) => {
-    const data = await Folder.create(req.body)
+    const { title, background } = req.body
 
-    if(!data) {
-        return next(new CustomError('Folder Not Created'))
+    if(!title || !background) {
+        res.status(400).json({ msg: 'Title or Background Field Cannot Be Empty' })
+        return next(new CustomError('Title or Background Field Cannot Be Empty', 400))
     }
+
+    await Folder.create({
+        title      : title,
+        background : background
+    })
 
     res.status(201).json({ msg: 'Folder Created' })
 })
 
 
 const updateFolder = async( async(req, res, next) => {
-    const { id: dataID } = req.params
+    const { id: dataID }        = req.params
     const { title, background } = req.body
 
+    if (!dataID) {
+        res.status(400).json({ msg: 'ID Field Cannot Be Empty' })
+        return next(new CustomError('ID Field Cannot Be Empty', 400))
+    }
+
     if(!title || !background) {
-        res.status(422).json({ msg: 'Title or Color Blank' })
-        return next(new CustomError('Title or Color Blank', 422))
+        res.status(400).json({ msg: 'Title or Color Field Cannot Be Empty' })
+        return next(new CustomError('Title or Color Field Cannot Be Empty', 400))
     }
 
-    const data = await Folder.findOneAndUpdate({ _id: dataID }, req.body, {
-        new: true,
-        runValidators: true
+    await Folder.findOneAndUpdate({ _id: dataID }, req.body, {
+        new           : true,
+        runValidators : true
     })
-
-    if(!data) {
-        return next(new CustomError('Folder Not Updated'))
-    }
 
     res.status(200).json({ msg: 'Folder Updated' })
 })
@@ -44,11 +52,12 @@ const updateFolder = async( async(req, res, next) => {
 
 const deleteFolder = async( async(req, res, next) => {
     const { id: dataID } = req.params
-    const data = await Folder.findOneAndDelete({ _id: dataID })
-
-    if(!data) {
-        return next(CustomError('Folder Not Deleted'))
+    if (!dataID) {
+        res.status(400).json({ msg: 'ID Field Cannot Be Empty' })
+        return next(new CustomError('ID Field Cannot Be Empty', 400))
     }
+
+    await Folder.findOneAndDelete({ _id: dataID })
 
     res.status(200).json({ msg: 'Folder Deleted' })
 })
@@ -57,6 +66,6 @@ const deleteFolder = async( async(req, res, next) => {
 module.exports = {
     getAllFolder,
     createFolder,
-    deleteFolder,
-    updateFolder
+    updateFolder,
+    deleteFolder
 }

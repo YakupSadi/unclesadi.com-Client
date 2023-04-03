@@ -139,8 +139,8 @@ export default {
     }
     .index > .article > h1 {
         padding-left: 1rem;
+        border-radius: 3px;
         margin-bottom: 2rem;
-        border: 3px solid #fff;
         background: linear-gradient(to right, #002B5B, #EA5455);
     }
 
@@ -156,10 +156,9 @@ export default {
     }
 
     .simple-image {
-        width: 100%;
         display: flex;
-        margin: 1rem 0;
-        max-height: 30rem;
+        margin: 2rem 0;
+        max-width: 100%;
         align-items: center;
         justify-content: center;
     }
@@ -176,5 +175,13 @@ export default {
         border-radius: 3px;
         border: 3px solid #fff;
         background-color: #1b1b1b;
+    }
+
+    .ce-paragraph {
+        display: inline-block;
+    }
+
+    .ce-header {
+        font-size: 1.7rem;
     }
 </style>

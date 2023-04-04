@@ -5,23 +5,6 @@ const async           = require('../middleware/asycn')
 const { CustomError } = require('../middleware/custom_error')
 
 
-const search = async( async(req, res) => {
-    const query  = req.query.word
-    const file   = req.query.filter || 'All'
-
-    const results = await Content.find({
-        title: { 
-            $regex   : `.*${query}.*`, 
-            $options : 'i' 
-        },
-
-        ...(file !== 'All' ? { file } : {})
-    })
-
-    res.status(200).json({ results })
-})
-
-
 const getAllContent = async( async(req, res) => {
     const data = await Content.find().sort({ createdAt: -1 })
 
@@ -175,6 +158,18 @@ const deleteContent = async( async(req, res, next) => {
         return next(new CustomError('ID Field Cannot Be Empty', 400))
     }
 
+    const data = await Content.findOne({ _id: dataID })
+    
+    const b = data.data.filter(map => map.type === 'image')
+    b.forEach(item => {
+        const a = item.data.url.slice(34)
+        fs.unlink(path.join(__dirname, '../', a), (err) => {
+            if (err) {
+                return next(new CustomError('Something Went Wrong'))
+            }
+        })
+    })
+
     await Content.findOneAndDelete({ _id: dataID })
 
     res.status(200).json({ msg: 'Content Deleted' })
@@ -182,7 +177,6 @@ const deleteContent = async( async(req, res, next) => {
 
 
 module.exports = {
-    search,
     getSlug,
     editorImg,
     deleteImg,

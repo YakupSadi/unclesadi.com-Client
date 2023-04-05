@@ -29,6 +29,12 @@ const createFile = async( async(req, res, next) => {
     const image             = req.file.path
 
     if(!title || !folder || !image) {
+        fs.unlink(path.join(__dirname, '../', image), (err) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+
         res.status(400).json({ msg: 'Title or Folder Field Cannot Be Empty' })
         return next(new CustomError('Title or Folder Field Cannot Be Empty', 400))
     }
@@ -50,7 +56,7 @@ const updateFile = async( async(req, res, next) => {
         return next(new CustomError('ID Field Cannot Be Empty', 400))
     }
 
-    if(!title || !folder) {
+    if(!title || !folder || !image) {
         fs.unlink(path.join(__dirname, '../', image), (err) => {
             if (err) {
                 console.log(err)

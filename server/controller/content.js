@@ -91,8 +91,8 @@ const editorImg = async( async(req, res, next) => {
     const old   = req.body
 
     if(!image) {
-        res.status(400).json({ msg: 'Title or File Field Cannot Be Empty' })
-        return next(new CustomError('Title or File Field Cannot Be Empty', 400))
+        res.status(400).json({ msg: 'Image Field Cannot Be Empty' })
+        return next(new CustomError('Image Field Cannot Be Empty', 400))
     }
 
     if(old.oldImg !== 'undefined') {
